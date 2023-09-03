@@ -16,8 +16,11 @@
 #include <fmt/format.h>
 #include <functional>
 #include <iostream>
+#include <QSystemTrayIcon>
 #include <string>
 #include <thread>
+#include <QAction>
+#include <QMenu>
 #include <toy/cpperclip.hpp>
 #include <toy/include.h>
 #include <vector>

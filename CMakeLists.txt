@@ -38,6 +38,7 @@ set(PROJECT_SOURCES
 
 )
 #at_add_resources()
+qt_add_resources(TinyCopyQ "image" PREFIX "/icon" FILES ui/icon.png)
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(TinyCopyQ
         MANUAL_FINALIZATION
@@ -74,7 +75,7 @@ set_target_properties(TinyCopyQ PROPERTIES
     MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
     MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
     MACOSX_BUNDLE TRUE
-    WIN32_EXECUTABLE TRUE
+    WIN32_EXECUTABLE FALSE
 )
 
 include(GNUInstallDirs)
