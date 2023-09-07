@@ -3,7 +3,6 @@
 
 #include "pch.hpp"
 class TinyCopyQTrayIcon {
-    Q_OBJECT
 public:
     QMenu* menu_;
     QWidget* parent_;

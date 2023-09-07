@@ -8,6 +8,7 @@ ClipboardMainWindow::ClipboardMainWindow(QWidget *parent)
     clipboard_listener_ = new ClipboardListener(this);
     window_listener_ = new WindowListener(this);
     tray_icon_ = new TinyCopyQTrayIcon(this);
+
     QObject::connect(
         clipboard_listener_,
         &ClipboardListener::captureNewContent,
@@ -29,13 +30,19 @@ ClipboardMainWindow::ClipboardMainWindow(QWidget *parent)
         this,
         &ClipboardMainWindow::onGetWindowFocus);
     QObject::connect(
-        tray_icon_->quit_action_,
-        &QAction::trigger,
+        getTrayIcon(),
+        &QSystemTrayIcon::activated,
         this,
         &ClipboardMainWindow::onTrayIconTriggered);
-
+    QObject::connect(
+        tray_icon_->quit_action_,
+        &QAction::triggered,
+        this,
+        &ClipboardMainWindow::onTrayIconQuitAction);
     clipboard_listener_->start();
     window_listener_->start();
+    //    this->setWindowIcon(QIcon(":/icon/ui/icon.png"));
+    tray_icon_->trayIconShow();
 }
 
 ClipboardMainWindow::~ClipboardMainWindow() {
@@ -83,9 +90,18 @@ void ClipboardMainWindow::onTrayIconTriggered(
             } else {
                 this->hide();
             }
+            is_hide = !is_hide;
             break;
         }
         default:
             break;
     }
+}
+
+void ClipboardMainWindow::onTrayIconQuitAction(bool /*checked*/) {
+    this->close();
+}
+
+void ClipboardMainWindow::showEvent(QShowEvent * /*event*/) {
+    GuiUtils::SetForegroundWindow(this->winId(), GuiUtils::status_code_);
 }

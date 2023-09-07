@@ -30,15 +30,13 @@ FetchContent_Declare(
 
 fetch_content_check(myguiutils)
 fetch_content_check(toy)
-file(GLOB_RECURSE  srcs "src/*")
+file(GLOB  srcs "src/*")
 message("project files in src/: ${srcs}" )
 set(PROJECT_SOURCES
         ${srcs}
         ./ui/clipboardmainwindow.ui
-
 )
 #at_add_resources()
-qt_add_resources(TinyCopyQ "image" PREFIX "/icon" FILES ui/icon.png)
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(TinyCopyQ
         MANUAL_FINALIZATION
@@ -75,7 +73,7 @@ set_target_properties(TinyCopyQ PROPERTIES
     MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
     MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
     MACOSX_BUNDLE TRUE
-    WIN32_EXECUTABLE FALSE
+    WIN32_EXECUTABLE TRUE
 )
 
 include(GNUInstallDirs)
@@ -88,7 +86,11 @@ install(TARGETS TinyCopyQ
 if(QT_VERSION_MAJOR EQUAL 6)
     qt_finalize_executable(TinyCopyQ)
 endif()
-
+qt_add_resources(TinyCopyQ "image" PREFIX "/icon" FILES ui/icon.png)
 target_include_directories(TinyCopyQ PRIVATE ${PROJECT_SOURCE_DIR} src ${CMAKE_BINARY_DIR}/${PROJECT_NAME}_autogen/include)
 target_link_libraries(TinyCopyQ PRIVATE toy::generic toy::cpperclip lib::gui_utils)
 target_precompile_headers(TinyCopyQ PRIVATE src/pch.hpp)
+
+add_subdirectory(src/platforms)
+target_link_libraries(TinyCopyQ PRIVATE platforms_utils)
+

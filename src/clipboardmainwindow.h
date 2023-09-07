@@ -28,15 +28,18 @@ public:
     ~ClipboardMainWindow() override;
     ContentListWidget *getContentListWidget();
     QSystemTrayIcon *getTrayIcon();
-    
+    void showEvent(QShowEvent *event) override;
+
 private:
     Ui::ClipboardMainWindow *ui;
-    
+
+
 public slots:
     void onItemLeftBtnDoubleClicked(QListWidgetItem *item);
     void onCapturedNewContent(const String &content);
     void onLossWindowFocus(const GuiUtils::WINID &winid);
     void onGetWindowFocus(const GuiUtils::WINID &winid);
     void onTrayIconTriggered(QSystemTrayIcon::ActivationReason reason);
+    void onTrayIconQuitAction(bool checked);
 };
 #endif /* SRC_CLIPBOARDMAINWINDOW */
